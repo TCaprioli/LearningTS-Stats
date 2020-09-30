@@ -33,3 +33,38 @@ To parse, split the loaded file by \n. Iterate through the array by mapping it a
     return row.split(",")
 })
 ```
+
+## Analyze the file
+The known match results are home win, away win, and draw. Create an enum MatchResults with those three values.
+Iterate through the parsed file.
+Using a conditional and the values of the enum MatchResults, increment a counter to determine the number of wins for the desired team.
+
+## Report the file
+Console log a template string explaining the desired team and their corrosponding wins
+
+# First Refactor!
+In the first iteration, the data is hard coded. 
+By creating a class, CsvFileReader, it allows the program to read files that may come from different sources, such as an API.
+```
+CsvFileReader.ts
+
+import fs from 'fs'
+
+export class CsvFileReader {
+    data: string[][] = [];
+    
+    constructor(public filename: string){}
+
+    read(): void{
+        this.data = fs.readFileSync(this.filename,{
+            encoding: 'utf-8'  
+        })
+        .split("\n")
+        .map((row: string): string[] =>{
+            return row.split(",")
+        })
+    }
+}
+```
+Import the new class into index.ts and initialize it with the desired file name. 
+Call the read method on the new class instance to parse it. 
